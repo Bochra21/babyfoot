@@ -19,7 +19,7 @@ Create a database in postgreSQL and call it babyfoot.
 Run this SQL script to create all necessary tables.
     ```bash
     
-         --- CREATE TABLE "User" (
+         -- CREATE TABLE "User" (
             id SERIAL PRIMARY KEY,
             username VARCHAR(50) NOT NULL,
          );
