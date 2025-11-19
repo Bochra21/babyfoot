@@ -1,7 +1,8 @@
 import { createUser, getUserId } from '../services/userService.js';
-import { getAllGames, addGame } from '../services/gameService.js';
-import { displayGames, setupAddGame, allGames } from './games.js';
+import { getAllGames } from '../services/gameService.js';
+import { displayGames, setupAddGame, allGames, startGamePolling } from './games.js';
 import { setupChat } from './chat.js';
+import { setupGamesWS } from './setupWS.js';
 
 let userName = '';
 let userId = null;
@@ -18,8 +19,10 @@ async function init() {
   allGames.push(...await getAllGames());
   displayGames(allGames);
 
+  setupGamesWS();
   setupAddGame(userId);
   setupChat(userName);
+  startGamePolling(2000);
 }
 
 init();

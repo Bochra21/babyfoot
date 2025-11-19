@@ -9,12 +9,10 @@
 </head>
 <body class="bg-gray-900 min-h-screen text-white">
   <div class="flex flex-col md:flex-row min-h-screen p-6 gap-6">
-
-    <!-- Games Section -->
     <div class="flex-1 max-w-lg flex flex-col">
       <div class="flex items-center gap-3 mb-2">
         <img src="./assets/babyfoot-players.svg" alt="babyfoot_players" class="w-6 sm:w-8 md:w-10">
-        <h2 class="text-3xl font-bold text-tealCustom">Games</h2>
+        <h2 class="text-3xl font-bold text-tealCustom">Babyfoot</h2>
       </div>
       <p id="gameCounter" class="text-tealCustom mb-4 font-semibold">Unfinished: 0</p>
       <div class="flex mb-4">
@@ -25,7 +23,6 @@
       <ul id="gameList" class="space-y-2" data-view="all"></ul>
     </div>
 
-    <!-- Chat Section -->
     <div class="flex-1 max-w-md flex flex-col bg-gray-800 rounded-xl shadow-xl p-4">
       <div class="flex items-center gap-3 mb-4">
         <img src="./assets/chat.svg" alt="chat_icon" class="w-2 sm:w-4 md:w-6">
@@ -38,9 +35,35 @@
         <button id="sendBtn" class="bg-yellow-400 text-black px-4 rounded-r hover:bg-yellow-500 transition">Send</button>
       </div>
     </div>
-
   </div>
 
-  <script type="module" src="./scripts/init.js"></script>
+  <script type="module">
+    import { createUser, getUserId } from './services/userService.js';
+    import { getAllGames } from './services/gameService.js';
+    import { displayGames, setupAddGame, allGames, startGamePolling } from './scripts/games.js';
+    import { setupChat } from './scripts/chat.js';
+    import { setupWS } from './scripts/setupWS.js';
+
+    async function init() {
+      let userName = '';
+      while (!userName) {
+        userName = prompt("What's your name?");
+        if (!userName) alert("Please enter your name!");
+      }
+
+      await createUser(userName);
+      const userId = await getUserId(userName);
+
+      allGames.push(...await getAllGames());
+      displayGames(allGames);
+
+      setupWS();
+      setupAddGame(userId, null);
+      setupChat(userName);
+      startGamePolling(2000);
+    }
+
+    init();
+  </script>
 </body>
 </html>
