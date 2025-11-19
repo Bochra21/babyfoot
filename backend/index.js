@@ -1,8 +1,22 @@
-const { connectDB, client } = require('./db/client');
+require('dotenv').config();
+const express = require('express');
+const { connectDB } = require('./db/client');
+
+const userRoutes = require('./routes/users');
+ const gameRoutes = require('./routes/games');
+// const messageRoutes = require('./routes/messages');
+
+const app = express();
+app.use(express.json());
 
 (async () => {
   await connectDB();
 
+  // Routes
+  app.use('/babyfoot/users', userRoutes);
+  app.use('/babyfoot/games', gameRoutes);
+  // app.use('/babyfoot/messages', messageRoutes);
 
-  client.end();
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 })();
