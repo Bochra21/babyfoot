@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const { connectDB } = require('./db/client');
 
 const userRoutes = require('./routes/users');
@@ -7,6 +8,7 @@ const userRoutes = require('./routes/users');
 // const messageRoutes = require('./routes/messages');
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 (async () => {

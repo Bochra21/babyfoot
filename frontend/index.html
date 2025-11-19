@@ -5,56 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Babyfoot</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            tealCustom: '#00a19a'
-          }
-        }
-      }
-    }
-  </script>
+  <script src="./styles/tailwind-config.js"></script>
 </head>
-
 <body class="bg-gray-900 min-h-screen text-white">
-
   <div class="flex flex-col md:flex-row min-h-screen p-6 gap-6">
 
     <!-- Games Section -->
     <div class="flex-1 max-w-lg flex flex-col">
-       <div class="flex items-center gap-3 mb-2">
-        <img src="./assets/babyfoot-players.svg" alt="babyfoot_players" class="w-6 h-auto sm:w-8 md:w-10">
-        <h2 class="text-3xl font-bold mb-0 text-tealCustom">Games</h2>
-       </div>
-
-       <!-- Game Counter -->
-       <p id="gameCounter" class="text-tealCustom mb-4 font-semibold">Unfinished games: 0</p>
-
+      <div class="flex items-center gap-3 mb-2">
+        <img src="./assets/babyfoot-players.svg" alt="babyfoot_players" class="w-6 sm:w-8 md:w-10">
+        <h2 class="text-3xl font-bold text-tealCustom">Games</h2>
+      </div>
+      <p id="gameCounter" class="text-tealCustom mb-4 font-semibold">Unfinished: 0</p>
       <div class="flex mb-4">
         <input id="gameInput" type="text" placeholder="Enter game name"
                class="flex-1 p-2 border border-gray-700 rounded-l bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-tealCustom">
         <button id="addGameBtn" class="bg-tealCustom text-white px-4 rounded-r hover:bg-teal-500 transition">Add</button>
       </div>
-
-      <ul id="gameList" class="space-y-2"></ul>
+      <ul id="gameList" class="space-y-2" data-view="all"></ul>
     </div>
 
     <!-- Chat Section -->
     <div class="flex-1 max-w-md flex flex-col bg-gray-800 rounded-xl shadow-xl p-4">
-
-       <div class="flex items-center gap-3 mb-4">
-        <img src="./assets/chat.svg" alt="chat_icon" class="w-2 h-auto sm:w-4 md:w-6">
-        <h2 class="text-3xl font-bold mb-0 text-tealCustom">Chat</h2>
-       </div>
-
-      <!-- Chat messages -->
-      <div id="chatMessages" class="flex-1 overflow-y-auto mb-4 p-3 bg-gray-900 rounded space-y-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800">
-        <!-- messages appear here -->
+      <div class="flex items-center gap-3 mb-4">
+        <img src="./assets/chat.svg" alt="chat_icon" class="w-2 sm:w-4 md:w-6">
+        <h2 class="text-3xl font-bold text-tealCustom">Chat</h2>
       </div>
-
-      <!-- Chat input -->
+      <div id="chatMessages" class="flex-1 overflow-y-auto mb-4 p-3 bg-gray-900 rounded space-y-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800"></div>
       <div class="flex gap-2">
         <input id="chatInput" type="text" placeholder="Type a message..."
                class="flex-1 p-2 rounded-l bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
@@ -64,104 +41,6 @@
 
   </div>
 
-  <script>
-    
-    // ----- Ask user name -----
-    let userName = '';
-    while (!userName) {
-      userName = prompt("What's your name?");
-      if (!userName) alert("Please enter your name to continue!");
-    }
-
-    // ----- Game Tracker -----
-    const gameInput = document.getElementById('gameInput');
-    const addGameBtn = document.getElementById('addGameBtn');
-    const gameList = document.getElementById('gameList');
-    const gameCounter = document.getElementById('gameCounter');
-
-    function updateCounter() {
-      const unfinished = gameList.querySelectorAll('li:not(.finished)').length;
-      gameCounter.textContent = `Unfinished games: ${unfinished}`;
-    }
-
-    function createGameItem(name) {
-      const li = document.createElement('li');
-      li.className = 'flex items-center justify-between bg-gray-700 p-2 rounded shadow hover:bg-gray-600 transition';
-
-      const span = document.createElement('span');
-      span.textContent = name;
-      span.className = 'font-medium';
-      li.appendChild(span);
-
-      const btnContainer = document.createElement('div');
-      btnContainer.className = 'flex gap-2';
-
-      const finishBtn = document.createElement('button');
-      finishBtn.textContent = 'Finish';
-      finishBtn.className = 'bg-tealCustom text-white px-2 py-1 rounded hover:bg-green-500 transition text-sm';
-      finishBtn.onclick = () => {
-        span.classList.add('line-through', 'text-gray-400');
-        li.classList.add('bg-tealCustom', 'finished');
-        finishBtn.disabled = true;
-        finishBtn.classList.add('opacity-50', 'cursor-not-allowed');
-        updateCounter();
-      };
-
-      const deleteBtn = document.createElement('button');
-      deleteBtn.textContent = 'Delete';
-      deleteBtn.className = 'bg-red-400 text-white px-2 py-1 rounded hover:bg-red-500 transition text-sm';
-      deleteBtn.onclick = () => {
-        li.remove();
-        updateCounter();
-      };
-
-      btnContainer.appendChild(finishBtn);
-      btnContainer.appendChild(deleteBtn);
-      li.appendChild(btnContainer);
-
-      return li;
-    }
-
-    addGameBtn.addEventListener('click', () => {
-      const name = gameInput.value.trim();
-      if (!name) return;
-      const gameItem = createGameItem(name);
-      gameList.appendChild(gameItem);
-      gameInput.value = '';
-      gameInput.focus();
-      updateCounter();
-    });
-
-    gameInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') addGameBtn.click();
-    });
-
-    // ----- Chat -----
-    const chatInput = document.getElementById('chatInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const chatMessages = document.getElementById('chatMessages');
-
-    function addMessage(msg, sender) {
-      const div = document.createElement('div');
-      div.className = 'bg-gray-700 p-2 rounded';
-      div.textContent = `${sender}: ${msg}`;
-      chatMessages.appendChild(div);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    sendBtn.addEventListener('click', () => {
-      const msg = chatInput.value.trim();
-      if (!msg) return;
-      addMessage(msg, userName);
-      chatInput.value = '';
-      chatInput.focus();
-    });
-
-    chatInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') sendBtn.click();
-    });
-
-  </script>
-
+  <script type="module" src="./scripts/init.js"></script>
 </body>
 </html>
