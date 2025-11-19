@@ -18,10 +18,11 @@ This is a RIA web application for managing Babyfoot games, featuring a frontend,
 Create a database in postgreSQL and call it babyfoot. 
 Run this SQL script to create all necessary tables.
     ```bash
-        CREATE TABLE "User" (
+    
+         --- CREATE TABLE "User" (
             id SERIAL PRIMARY KEY,
             username VARCHAR(50) NOT NULL,
-        );
+         );
         
         -- Create the Game table
         CREATE TABLE "Game" (
