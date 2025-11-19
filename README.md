@@ -17,26 +17,26 @@ This is a RIA web application for managing Babyfoot games, featuring a frontend,
 
 Create a database in postgreSQL and call it babyfoot. 
 Run this SQL script to create all necessary tables.
-
-CREATE TABLE "User" (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-);
-
--- Create the Game table
-CREATE TABLE "Game" (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    state VARCHAR(50) ,
-    userid INT REFERENCES "User"(id) ON DELETE CASCADE
-);
-
--- Create additional tables if needed (example: Chat messages)
-CREATE TABLE "Message" (
-    id SERIAL PRIMARY KEY,
-    senderid INT REFERENCES "User"(id) ON DELETE CASCADE,
-    content TEXT NOT NULL,
-);
+    ```bash
+        CREATE TABLE "User" (
+            id SERIAL PRIMARY KEY,
+            username VARCHAR(50) NOT NULL,
+        );
+        
+        -- Create the Game table
+        CREATE TABLE "Game" (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(50) NOT NULL,
+            state VARCHAR(50) ,
+            userid INT REFERENCES "User"(id) ON DELETE CASCADE
+        );
+        
+        -- Create additional tables if needed (example: Chat messages)
+        CREATE TABLE "Message" (
+            id SERIAL PRIMARY KEY,
+            senderid INT REFERENCES "User"(id) ON DELETE CASCADE,
+            content TEXT NOT NULL,
+        );
 
 ### You will need **3 terminals** to run the project.
 
